@@ -1,18 +1,29 @@
-import { Router } from "express";
+import { Router } from 'express'
+import { body } from 'express-validator'
+import { createAccount, login } from './handlers'
+import { handleInputErrors } from './middleware/validation'
 
-const router = Router();
+const router = Router()
 
 // Routing
-router.get("/", (req, res) => {
-  res.json({ message: "Hello World!" });
-});
+router.post(
+  '/auth/register',
+  body('handle').notEmpty().withMessage('Nombre de usuario no válido'),
+  body('name').notEmpty().withMessage('El nombre es obligatorio'),
+  body('email').isEmail().withMessage('Correo electrónico no válido'),
+  body('password')
+    .isLength({ min: 6 })
+    .withMessage('La contraseña debe tener al menos 6 caracteres'),
+  handleInputErrors,
+  createAccount
+)
 
-router.get("/nosotros", (req, res) => {
-  res.json({ message: "Desde nosotros!" });
-});
+router.post(
+  '/auth/login',
+  body('email').isEmail().withMessage('Datos inválidos'),
+  body('password').isLength({ min: 6 }).withMessage('Datos inválidos'),
+  handleInputErrors,
+  login
+)
 
-router.get("/contacto", (req, res) => {
-  res.json({ message: "Desde contacto!" });
-});
-
-export default router;
+export default router
