@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { updateProfile } from '../api/DevTreeAPI'
+import { updateProfile, uploadImage } from '../api/DevTreeAPI'
 import ErrorMessage from '../components/ErrorMessage'
 import type { ProfileForm, User } from '../types'
 
@@ -25,14 +25,38 @@ export default function ProfileView() {
     },
   })
 
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadImage,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user'], (prevData: User) => {
+        return {
+          ...prevData,
+          image: data,
+        }
+      })
+    },
+  })
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileForm>({ defaultValues: initialValues })
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      uploadImageMutation.mutate(e.target.files[0])
+    }
+  }
+
   const handleUserProfileForm = (formData: ProfileForm) => {
-    updateProfileMutation.mutate(formData)
+    const user: User = queryClient.getQueryData(['user'])!
+    user.handle = formData.handle
+    user.description = formData.description
+    updateProfileMutation.mutate(user)
   }
 
   return (
@@ -78,13 +102,13 @@ export default function ProfileView() {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={() => {}}
+          onChange={handleChange}
         />
       </div>
 
       <input
         type="submit"
-        className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
+        className="bg-cyan-400 hover:bg-cyan-500 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
         value="Guardar Cambios"
       />
     </form>
