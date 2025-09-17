@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import AppLayout from './layouts/AppLayout'
 import AuthLayout from './layouts/AuthLayout'
 import HandleView from './views/HandleView'
+import HomeView from './views/HomeView'
 import LinkTreeView from './views/LinkTreeView'
 import LoginView from './views/LoginView'
 import NotFoundView from './views/NotFoundView'
@@ -23,6 +24,7 @@ export default function Router() {
         <Route path="/:handle" element={<AuthLayout />}>
           <Route element={<HandleView />} index={true} />
         </Route>
+        <Route path="/" element={<HomeView />} />
         <Route path="/404" element={<AuthLayout />}>
           <Route element={<NotFoundView />} index={true} />
         </Route>
