@@ -12,7 +12,7 @@ import {
 import { authenticate } from './middleware/auth'
 import { handleInputErrors } from './middleware/validation'
 
-const router = Router()
+const router: Router = Router()
 
 // Routing
 router.post(
@@ -50,7 +50,7 @@ router.post(
   '/search',
   body('handle').notEmpty().withMessage('El handle no puede ir vacío'),
   handleInputErrors,
-  searchByHandle,
+  searchByHandle
 )
 
 export default router

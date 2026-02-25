@@ -1,13 +1,13 @@
 import cors from 'cors'
 import 'dotenv/config'
-import express from 'express'
+import express, { Express } from 'express'
 import morgan from 'morgan'
 import { corsConfig } from './config/cors'
 import { connectDB } from './config/db'
 import router from './router'
 
 // Initialize express app
-const app = express()
+const app: Express = express()
 
 // Enable CORS with the specified configuration
 app.use(cors(corsConfig))

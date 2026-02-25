@@ -5,7 +5,7 @@ export default function HomeView() {
   return (
     <>
       <Header />
-      <main className="bg-gray-100 py-10 min-h-screen bg-no-repeat bg-right-top lg:bg-home lg:bg-size-[50%]">
+      <main className="bg-gray-100 py-10 min-h-screen bg-no-repeat bg-top-right lg:bg-home lg:bg-size-[50%]">
         <div className="max-w-5xl mx-auto mt-10">
           <div className="lg:w-1/2 px-10 lg:p-0 space-y-6">
             <h1 className="text-6xl font-black">
